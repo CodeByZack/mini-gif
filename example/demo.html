@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>解码/编码GIF</title>
+    <script src="../bundle.js"></script>
+    <style>
+        .container{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        #gif-canvas{
+            border: 1px solid #333;
+            margin-bottom: 20px;
+        }
+        .info{
+            display: block;
+            margin: 20px 0;
+        }
+        .btn{
+            background-color: #999;
+            border: 1px solid #333;
+            padding: 5px 10px;
+            cursor: pointer;
+            color: #fff;
+        }
+        .random-gif{
+            display: block;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <canvas id="gif-canvas"></canvas>
+        <input id='input' type="file"/>
+        <span class="info">请选择GIF图片</span>
+        <div>
+            <span class="btn play">play</span>
+            <span class="btn pause">pause</span>
+            <span class="btn stop">stop</span>
+        </div>
+
+        <span class="btn random-gif">生成一张GIF图片</span>
+        <img id="gif-img"/>
+        <a id="gif-download">下载生成的GIF</a>
+    </div>
+
+    <script>
+        const input = document.querySelector('#input');
+        const canvas = document.querySelector('#gif-canvas');
+        const ctx = canvas.getContext('2d');
+        const info = document.querySelector('.info');
+        const playBtn = document.querySelector('.btn.play');
+        const pauseBtn = document.querySelector('.btn.pause');
+        const stopBtn = document.querySelector('.btn.stop');
+        
+        const randomGifBtn = document.querySelector('.btn.random-gif');
+        const gifImg = document.querySelector('#gif-img');
+        const gifDownload = document.querySelector('#gif-download');
+
+        
+        let frames = [];
+        let nowFrame = 0;
+        let numFrames = 0;
+        let loopCount = 0;
+        let playStatus = 'stop';
+
+
+        const handler = async ()=>{
+            const curFile = input.files[0];
+            const arrBuf = await curFile.arrayBuffer();
+            const buffer = new Uint8Array(arrBuf);
+            const decodeGif = new minigif.GIFDecoder(buffer);
+
+            console.log(decodeGif);
+            canvas.width = decodeGif.width;
+            canvas.height = decodeGif.height;
+
+            frames = [];
+
+            numFrames = decodeGif.numFrames();
+            loopCount = decodeGif.loopCount();
+
+            info.innerText = `width:${decodeGif.width}/height:${decodeGif.height}/总帧数:${numFrames}`;
+
+            for(let i = 0; i < numFrames; i++){
+                const frameInfo = decodeGif.frameInfo(i);
+                const imagedata = ctx.createImageData(decodeGif.width, decodeGif.height);
+                if (i > 0 && frameInfo.disposal < 2) {
+                    imagedata.data.set(new Uint8ClampedArray(frames[i - 1].data.data));
+                }
+                decodeGif.decodeAndBlitFrameRGBA(i,imagedata.data);
+                frames.push({data:imagedata,delay:frameInfo.delay*10});
+            };
+            startLoop();
+            // ctx.putImageData(frames[numFrames-1],0,0);
+        };
+
+        input.addEventListener('change',handler);
+        playBtn.addEventListener('click',()=>{
+            if(playStatus === 'play')return;
+            playStatus = 'play';
+            startLoop();
+        });
+        pauseBtn.addEventListener('click',()=>{
+            playStatus = 'pause';
+        });
+        stopBtn.addEventListener('click',()=>{
+            playStatus = 'stop';
+        });
+
+        randomGifBtn.addEventListener('click',()=>{
+            var encoder = new minigif.GIFEncoder();
+            console.log(encoder)
+            encoder.setRepeat(0);   // loop forever
+            encoder.setDelay(100);  // go to next frame every 100 ms
+            encoder.start();        // write header
+            encoder.addFrame(ctx);  // Render the frame from the canvas context.
+            ctx.font = '20px serif';
+            ctx.fillText('来追我啊！', 10, 50);
+            encoder.addFrame(ctx);  // Render the frame from the canvas context.
+            encoder.finish();  // finsh
+
+            // const rawBinStr = encoder.stream().getData();
+            // const arr = new Uint8Array(rawBinStr.length);
+            // for(let i =0; i<arr.length; i++){
+            //     arr[i] = rawBinStr.charCodeAt(i);
+            //     console.log(arr[i]);
+            // }
+            const arr = encoder.stream().getUnit8Array();
+            const file = new Blob([arr]);
+            console.log(file);
+            const url =  URL.createObjectURL(file);
+            gifImg.src = url;
+            gifDownload.setAttribute('href',url);
+            gifDownload.setAttribute('download',"teat.gif");
+        });
+
+        const startLoop = ()=>{
+            setTimeout(loop,0);
+        }
+
+        const loop = ()=>{
+            if(playStatus === 'stop'){
+                nowFrame = 0;
+                return;
+            }
+            if(playStatus === 'pause'){
+                return;
+            }
+            
+            if(nowFrame + 1 >= numFrames){
+                nowFrame = 0;
+            }else{
+                nowFrame++;
+            }
+            ctx.putImageData(frames[nowFrame].data,0,0);
+            setTimeout(loop,frames[nowFrame].delay);
+        };
+
+    </script>
+</body>
+</html>
