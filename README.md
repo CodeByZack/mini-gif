@@ -7,21 +7,41 @@
   <a href="https://github.com/CodeByZack/mini-gif/graphs/commit-activity" target="_blank">
     <img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" />
   </a>
-  <a href="https://github.com/CodeByZack/mini-gif/blob/master/LICENSE" target="_blank">
-    <img alt="License: ISC" src="https://img.shields.io/github/license/CodeByZack/mini-gif" />
-  </a>
 </p>
 
 > A GIF encoding and decoding library written in Vanilla JS
 > 一个单纯的GIF编码/解码的JS库
 
-### 🏠 [主页](https://github.com/CodeByZack/mini-gif#readme)
+### [地址](https://github.com/CodeByZack/mini-gif#readme)
 
-## 作者
 
-👤 **zackdk**
+## 引入
 
-* Github: [@CodeByZack](https://github.com/CodeByZack)
+### In Browser
+
+```
+<script src="./dist/mini-gif.min.js"></script>
+
+```
+
+### ES Module
+
+```
+import minigif from 'minigif.js';
+
+const { GIFEncoder, GIFDecoder } = minigif;
+
+```
+
+### NodeJS
+
+```
+const minigif = require('minigif.js');
+
+const { GIFEncoder, GIFDecoder } = minigif;
+
+```
+
 
 ## 使用方法
 
@@ -38,7 +58,6 @@ const gifReader = new minigif.GIFDecoder(buffer);
 ```
 
 ### GIFEncoder
-
 
 ```
 const encoder = new minigif.GIFEncoder();
@@ -58,6 +77,10 @@ const url =  URL.createObjectURL(file);        //获取浏览器可用的地址
 
 ```
 
+### 更多
+
+见example文件夹下示例。
+
 ## 🤝 问题
 
 欢迎任何issue，[issues 页面](https://github.com/CodeByZack/mini-gif/issues)。
@@ -74,10 +97,3 @@ const url =  URL.createObjectURL(file);        //获取浏览器可用的地址
 
 编码GIF摘自 [jsgif](https://github.com/antimatter15/jsgif)。
 
-## 📝 License
-
-Copyright © 2020 [zackdk](https://github.com/CodeByZack).<br />
-This project is [ISC](https://github.com/CodeByZack/mini-gif/blob/master/LICENSE) licensed.
-
-***
-_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
