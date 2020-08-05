@@ -21,7 +21,6 @@
 
 ```
 <script src="./dist/mini-gif.min.js"></script>
-
 ```
 
 ### ES Module
@@ -30,7 +29,6 @@
 import minigif from 'minigif.js';
 
 const { GIFEncoder, GIFDecoder } = minigif;
-
 ```
 
 ### NodeJS
@@ -39,11 +37,13 @@ const { GIFEncoder, GIFDecoder } = minigif;
 const minigif = require('minigif.js');
 
 const { GIFEncoder, GIFDecoder } = minigif;
-
 ```
 
 
 ## 使用方法
+
+该库只有两个核心方法GIFDecoder和GIFEncoder。
+
 
 ### GIFDecoder 
 
@@ -54,10 +54,32 @@ const curFile = input.files[0];
 const arrBuf = await curFile.arrayBuffer();
 const buffer = new Uint8Array(arrBuf);
 const gifReader = new minigif.GIFDecoder(buffer);
-
 ```
 
+|  方法   | 参数  | 作用 |
+|  ----  | ----  | ---- |
+| start | -- | 写入GIF起始标志,之后才可以添加帧 |
+| setSize | w,h | size/不设默认为第一帧取size |
+| setDelay  | number 单位：1/100s | Sets the delay time between each frame, or changes it for subsequent frames(applies to last frame added) |
+| setRepeat | number | 播放次数/0为永久 |
+| setQuality | number(1-20) | default 10.(这个是采样率,值越小越精确,质量越高) |
+| setDispose  | number disposal code | -- |
+| setComment | string | -- |
+| setFrameRate | number | Sets frame rate in frames per second. |
+| setTransparent | color值 | -- |
+| addFrame | ImageData/ctx | 添加帧/参数可以是ImageData或者ctx,ctx会自动获取画布的数据。|
+| finish | -- | 结束添加数据，写入GIF结尾标志 |
+| cont | -- | 所以之前的操作都会被清空 |
+| stream | -- | 返回生成的ByteArray |
+
+// 后来添加的 可用于浏览器获取Unit8Array数据
+ByteArray.getUnit8Array获取JS可识别的二进制数据
+
+
+
 ### GIFEncoder
+
+具体使用见example文件夹下示例。
 
 ```
 const encoder = new minigif.GIFEncoder();
@@ -74,12 +96,24 @@ encoder.finish();       // finsh
 const arr = encoder.stream().getUnit8Array();  //获取生成的Unit8Array
 const file = new Blob([arr]);                  //生成文件
 const url =  URL.createObjectURL(file);        //获取浏览器可用的地址
-
 ```
+|  方法   | 参数  | 作用 |
+|  ----  | ----  | ---- |
+|  numFrames  | --  | 帧数 |
+|  loopCount  | ----  | 播放次数 |
+|  frameInfo  | number  | 获取某一帧的信息（不含帧数据） |
+|  decodeAndBlitFrameRGBA  | number,Uint8Array  | 需要传入一个arr接受该帧的rgba数据 |
 
-### 更多
+|  属性 | 作用 |
+|  ---- | ---- |
+|  frameInfo.x  | x |
+|  frameInfo.y  | y |
+|  frameInfo.width  | w |
+|  frameInfo.height  | h |
+|  frameInfo.delay  | 该帧的delay时间 |
+|  frameInfo.disposal  | 可能为（0-4）/值为1的时候需要保留前一帧的数据，要不会有空白像素 |
 
-见example文件夹下示例。
+
 
 ## 🤝 问题
 
