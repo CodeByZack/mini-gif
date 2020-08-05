@@ -111,14 +111,8 @@ const url =  URL.createObjectURL(file);        //获取浏览器可用的地址
 | cont | -- | 所以之前的操作都会被清空 |
 | stream | -- | 返回生成的ByteArray |
 
-// 后来添加的 可用于浏览器获取Unit8Array数据
-ByteArray.getUnit8Array获取JS可识别的二进制数据
+// 添加了ByteArray.getUnit8Array 可用于浏览器端获取Unit8Array数据
 
-
-
-## 🤝 问题
-
-欢迎任何issue，[issues 页面](https://github.com/CodeByZack/mini-gif/issues)。
 
 ## 支持一下
 
