@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>解码/编码GIF</title>
-    <script src="../bundle.js"></script>
+    <script src="../dist/mini-gif.min.js"></script>
     <style>
         .container{
             display: flex;
@@ -125,12 +125,6 @@
             encoder.addFrame(ctx);  // Render the frame from the canvas context.
             encoder.finish();  // finsh
 
-            // const rawBinStr = encoder.stream().getData();
-            // const arr = new Uint8Array(rawBinStr.length);
-            // for(let i =0; i<arr.length; i++){
-            //     arr[i] = rawBinStr.charCodeAt(i);
-            //     console.log(arr[i]);
-            // }
             const arr = encoder.stream().getUnit8Array();
             const file = new Blob([arr]);
             console.log(file);
