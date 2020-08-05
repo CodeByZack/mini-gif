@@ -47,7 +47,7 @@ const { GIFEncoder, GIFDecoder } = minigif;
 
 ### GIFDecoder 
 
-GIFDecoder 接受一个GIF的二进制流（Unit8Array格式）
+GIFDecoder 接受一个GIF的二进制流（Unit8Array格式/browser Buffer/node）
 
 ```
 const curFile = input.files[0];
