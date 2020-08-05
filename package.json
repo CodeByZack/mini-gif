@@ -1,15 +1,23 @@
 {
   "name": "mini-gif",
   "version": "1.0.0",
-  "description": "",
+  "description": "A GIF encoding and decoding library written in Vanilla JS",
   "main": "index.js",
   "scripts": {
     "build": "rollup -c rollup.config.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "zackdk",
   "license": "ISC",
+  "homepage": "https://github.com/CodeByZack/mini-gif#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CodeByZack/mini-gif"
+  },
+  "bugs": {
+    "url": "https://github.com/CodeByZack/mini-gif/issues"
+  },
   "devDependencies": {
     "rollup-plugin-terser": "^6.1.0"
   }
