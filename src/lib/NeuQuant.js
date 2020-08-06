@@ -1,3 +1,4 @@
+/* eslint-disable */
 /*
  * NeuQuant Neural-Net Quantization Algorithm
  * ------------------------------------------
