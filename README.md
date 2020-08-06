@@ -10,9 +10,14 @@
 </p>
 
 > A GIF encoding and decoding library written in Vanilla JS
-> 一个单纯的GIF编码/解码的JS库
 
-### [地址](https://github.com/CodeByZack/mini-gif#readme)
+## 感谢
+
+核心代码来自于以下两个库，该库只是做了部分整合方便使用。
+
+解码GIF摘自 [omggif](https://github.com/deanm/omggif)。
+
+编码GIF摘自 [jsgif](https://github.com/antimatter15/jsgif)。
 
 
 ## 引入
@@ -42,8 +47,9 @@ const { GIFEncoder, GIFDecoder } = minigif;
 
 ## 使用方法
 
-该库只有两个核心方法GIFDecoder和GIFEncoder。
+具体使用见example文件夹下示例。
 
+该库只有两个核心对象GIFDecoder和GIFEncoder。简单导出了另外两个库的对象，建议直接看源文件注释了解相关API。
 
 ### GIFDecoder 
 
@@ -75,7 +81,6 @@ const gifReader = new minigif.GIFDecoder(buffer);
 
 ### GIFEncoder
 
-具体使用见example文件夹下示例。
 
 ```
 const encoder = new minigif.GIFEncoder();
@@ -118,11 +123,5 @@ const url =  URL.createObjectURL(file);        //获取浏览器可用的地址
 
 如果该库对你有帮助，可以点一下 ⭐️!
 
-## 感谢
 
-核心代码来自于以下两个库，该库只是做了部分整合方便使用。
-
-解码GIF摘自 [omggif](https://github.com/deanm/omggif)。
-
-编码GIF摘自 [jsgif](https://github.com/antimatter15/jsgif)。
 

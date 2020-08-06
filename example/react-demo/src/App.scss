@@ -1,0 +1,25 @@
+.App {
+  text-align: center;
+
+  .decode-box{
+    padding: 20px;
+    canvas{
+      border: 1px solid #333;
+    }
+    .line{
+      margin: 20px 0;
+    }
+    .btn-group{
+      display: flex;
+      justify-content: center;
+      .btn{
+        padding: 8px 16px;
+        background-color: #999;
+        color: white;
+        cursor: pointer;
+        margin-right: 20px;
+      }
+    }
+  }
+}
+
