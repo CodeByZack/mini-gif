@@ -31,7 +31,7 @@
 ### ES Module
 
 ```
-import minigif from 'minigif.js';
+import minigif from 'mini-gif';
 
 const { GIFEncoder, GIFDecoder } = minigif;
 ```
@@ -39,7 +39,7 @@ const { GIFEncoder, GIFDecoder } = minigif;
 ### NodeJS
 
 ```
-const minigif = require('minigif.js');
+const minigif = require('mini-gif');
 
 const { GIFEncoder, GIFDecoder } = minigif;
 ```
