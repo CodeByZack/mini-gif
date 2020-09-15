@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import minigif from "./mini-gif.esm";
+import minigif from "mini-gif";
 import {
   Container,
   Paper,

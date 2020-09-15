@@ -25,7 +25,7 @@
 ### In Browser
 
 ```
-<script src="./dist/mini-gif.min.js"></script>
+<script src="./dist/mini-gif.umd.js"></script>
 ```
 
 ### ES Module
@@ -51,7 +51,9 @@ const { GIFEncoder, GIFDecoder } = minigif;
 
 该库只有两个核心对象GIFDecoder和GIFEncoder。简单导出了另外两个库的对象，建议直接看源文件注释了解相关API。
 
-### GIFDecoder 
+
+<details>
+<summary>GIFDecoder</summary>
 
 GIFDecoder 接受一个GIF的二进制流（Unit8Array格式/browser Buffer/node）
 
@@ -60,6 +62,7 @@ const curFile = input.files[0];
 const arrBuf = await curFile.arrayBuffer();
 const buffer = new Uint8Array(arrBuf);
 const gifReader = new minigif.GIFDecoder(buffer);
+
 ```
 
 |  方法   | 参数  | 作用 |
@@ -78,10 +81,12 @@ const gifReader = new minigif.GIFDecoder(buffer);
 |  frameInfo.delay  | 该帧的delay时间 |
 |  frameInfo.disposal  | 可能为（0-4）/值为1的时候需要保留前一帧的数据，要不会有空白像素 |
 
+</details>
 
-### GIFEncoder
 
 
+<details>
+<summary>GIFEncoder</summary>
 ```
 const encoder = new minigif.GIFEncoder();
 encoder.setRepeat(0);   // loop forever
@@ -117,6 +122,7 @@ const url =  URL.createObjectURL(file);        //获取浏览器可用的地址
 | stream | -- | 返回生成的ByteArray |
 
 // 添加了ByteArray.getUnit8Array 可用于浏览器端获取Unit8Array数据
+</details>
 
 
 ## 支持一下

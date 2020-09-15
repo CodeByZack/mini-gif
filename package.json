@@ -2,13 +2,15 @@
   "name": "mini-gif",
   "version": "1.0.0",
   "description": "A GIF encoding and decoding library written in Vanilla JS",
-  "main": "index.js",
+  "main": "dist/mini-gif.umd.js",
+  "module": "dist/mini-gif.esm.js",
   "scripts": {
-    "build-esm": "rollup -c rollup.config.esm.js",
-    "build-umd": "rollup -c rollup.config.umd.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rollup -c rollup.config.js"
   },
-  "keywords": [],
+  "keywords": [
+    "gif-decoder",
+    "gif-encoder"
+  ],
   "author": "zackdk",
   "license": "ISC",
   "homepage": "https://github.com/CodeByZack/mini-gif#readme",
@@ -20,6 +22,7 @@
     "url": "https://github.com/CodeByZack/mini-gif/issues"
   },
   "devDependencies": {
+    "rollup": "^2.26.11",
     "rollup-plugin-terser": "^6.1.0"
   }
 }
