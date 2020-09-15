@@ -53,6 +53,7 @@ const { GIFEncoder, GIFDecoder } = minigif;
 
 
 <details>
+
 <summary>GIFDecoder</summary>
 
 GIFDecoder 接受一个GIF的二进制流（Unit8Array格式/browser Buffer/node）
@@ -87,6 +88,7 @@ const gifReader = new minigif.GIFDecoder(buffer);
 
 <details>
 <summary>GIFEncoder</summary>
+
 ```
 const encoder = new minigif.GIFEncoder();
 encoder.setRepeat(0);   // loop forever
@@ -102,6 +104,7 @@ encoder.finish();       // finsh
 const arr = encoder.stream().getUnit8Array();  //获取生成的Unit8Array
 const file = new Blob([arr]);                  //生成文件
 const url =  URL.createObjectURL(file);        //获取浏览器可用的地址
+
 ```
 
 
