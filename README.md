@@ -19,6 +19,9 @@
 
 编码GIF摘自 [jsgif](https://github.com/antimatter15/jsgif)。
 
+## demo 演示
+
+[表情包DEMO](https://blog.zackdk.top/minigif)
 
 ## 引入
 
