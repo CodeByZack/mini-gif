@@ -55,9 +55,7 @@ const { GIFEncoder, GIFDecoder } = minigif;
 该库只有两个核心对象GIFDecoder和GIFEncoder。简单导出了另外两个库的对象，建议直接看源文件注释了解相关API。
 
 
-<details>
-
-<summary>GIFDecoder</summary>
+## GIFDecoder
 
 GIFDecoder 接受一个GIF的二进制流（Unit8Array格式/browser Buffer/node）
 
@@ -85,12 +83,11 @@ const gifReader = new minigif.GIFDecoder(buffer);
 |  frameInfo.delay  | 该帧的delay时间 |
 |  frameInfo.disposal  | 可能为（0-4）/值为1的时候需要保留前一帧的数据，要不会有空白像素 |
 
-</details>
 
 
 
-<details>
-<summary>GIFEncoder</summary>
+
+## GIFEncoder
 
 ```
 const encoder = new minigif.GIFEncoder();
@@ -128,7 +125,6 @@ const url =  URL.createObjectURL(file);        //获取浏览器可用的地址
 | stream | -- | 返回生成的ByteArray |
 
 // 添加了ByteArray.getUnit8Array 可用于浏览器端获取Unit8Array数据
-</details>
 
 
 ## 支持一下
