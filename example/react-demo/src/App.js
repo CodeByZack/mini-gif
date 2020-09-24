@@ -1,5 +1,5 @@
-import React, { useRef, useState, useEffect } from "react";
-import minigif from "mini-gif";
+import React, { useRef, useState, useEffect } from 'react';
+import minigif from 'mini-gif';
 import {
   Container,
   Paper,
@@ -11,18 +11,17 @@ import {
   TextField,
   Slider,
   Grid,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { readFile } from './utils';
 
 const useStyles = makeStyles((theme) => {
-  console.log(theme);
-
   return {
     mt10: {
       marginTop: theme.spacing(2),
     },
     tipline: {
-      textAlign: "left",
+      textAlign: 'left',
     },
     tipLabel: {
       color: theme.palette.secondary.main,
@@ -36,7 +35,8 @@ const useGif = (file) => {
   const [gifFrames, setGifFrames] = useState([]);
 
   const decode = async (file) => {
-    const arrBuf = await file.arrayBuffer();
+    console.log(file);
+    const arrBuf = await readFile(file);
     const buf = new Uint8Array(arrBuf);
     const decodeGif = new minigif.GIFDecoder(buf);
 
@@ -79,70 +79,69 @@ const useGif = (file) => {
 
 function App() {
   const [file, setFile] = useState();
-  const [playStatus, setPlayStatus] = useState("PAUSED");
+  const [playStatus, setPlayStatus] = useState('PAUSED');
   const [nowFrame, setNowFrame] = useState(0);
   const [jumpFrame, setJumpFrame] = useState(0);
-  const [downloadUrl, setDownloadUrl] = useState("");
+  const [downloadUrl, setDownloadUrl] = useState('');
   const [changedFrames, setChangedFrames] = useState([]);
-  const [inputConfig,setInputConfig] = useState({});
+  const [inputConfig, setInputConfig] = useState({});
   const { gifInfo, gifFrames } = useGif(file);
   const playCanvasRef = useRef();
   const styles = useStyles();
 
-  const handleInput = (key)=>(e)=>{
+  const handleInput = (key) => (e) => {
     const value = e.target.value;
-    setInputConfig({...inputConfig,[key]:value});
+    setInputConfig({ ...inputConfig, [key]: value });
   };
 
   const handleClick = (type) => () => {
-    if (type === "ADDTEXT") {
+    if (type === 'ADDTEXT') {
       handleEdit();
-    } else if (type === "RESET") {
+    } else if (type === 'RESET') {
       setChangedFrames([]);
-    } else if (type === "DOWNLOAD") {
+    } else if (type === 'DOWNLOAD') {
       if (changedFrames.length === 0) {
-        alert("没有改动");
+        alert('没有改动');
         return;
       }
       generateGif();
     }
   };
 
-  const handleEdit = ()=>{
-    const { x,y,text,startFrame,endFrame } = inputConfig;
-    if(!x || !y || !text || !startFrame || !endFrame){
-      alert('检查输入!')
-      return ;
+  const handleEdit = () => {
+    const { x, y, text, startFrame, endFrame } = inputConfig;
+    if (!x || !y || !text || !startFrame || !endFrame) {
+      alert('检查输入!');
+      return;
     }
-    if(playStatus === 'PLAY')setPlayStatus('PAUSE');
-    
+    if (playStatus === 'PLAY') setPlayStatus('PAUSE');
+
     const canvas = playCanvasRef.current;
-    const ctx = canvas.getContext("2d");
-    ctx.font = "20px serif";
+    const ctx = canvas.getContext('2d');
+    ctx.font = '20px serif';
     const resArr = [];
-    for(let i = startFrame; i<=endFrame; i++){
+    for (let i = startFrame; i <= endFrame; i++) {
       const frame = gifFrames[i];
       const w = frame.data.width;
       const h = frame.data.height;
       const delay = frame.delay;
       ctx.putImageData(frame.data, 0, 0);
-      ctx.fillStyle = "white";
+      ctx.fillStyle = 'white';
       ctx.fillText(text, x, y);
       const data = ctx.getImageData(0, 0, w, h);
-      resArr[i] = {data,delay}
-    };
+      resArr[i] = { data, delay };
+    }
 
-    
-    const frames = {...changedFrames,...resArr,length:gifInfo.numFrames};
+    const frames = { ...changedFrames, ...resArr, length: gifInfo.numFrames };
     console.log(frames);
     setChangedFrames(frames);
   };
 
-  const handleChangeStatus = (type)=>()=>{
-    if(type === 'PLAY' && playStatus !== 'PLAY'){      
+  const handleChangeStatus = (type) => () => {
+    if (type === 'PLAY' && playStatus !== 'PLAY') {
       setPlayStatus(type);
       startLoop(true);
-    }else if(type === 'PAUSE' && playStatus !== 'PAUSE'){
+    } else if (type === 'PAUSE' && playStatus !== 'PAUSE') {
       setPlayStatus(type);
     }
   };
@@ -180,7 +179,7 @@ function App() {
   };
 
   const startLoop = () => {
-    setTimeout(loop,gifFrames[nowFrame].delay);
+    setTimeout(loop, gifFrames[nowFrame].delay);
   };
 
   const loop = () => {
@@ -193,36 +192,38 @@ function App() {
     setNowFrame(next);
   };
 
-  const drawFrame = ()=>{
+  const drawFrame = () => {
     const canvas = playCanvasRef.current;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     const frame = changedFrames[nowFrame] || gifFrames[nowFrame];
     ctx.putImageData(frame.data, 0, 0);
-  }
+  };
 
   const handleSliderChange = (e, num) => {
-    if (playStatus === "PLAY") return;
+    if (playStatus === 'PLAY') return;
     if (num === jumpFrame) return;
     setJumpFrame(num);
   };
 
   useEffect(() => {
-    if (playStatus === "PAUSE") {
+    if (playStatus === 'PAUSE') {
       setNowFrame(jumpFrame);
     }
   }, [jumpFrame]);
 
-  useEffect(()=>{
-    if(!playCanvasRef.current || !gifInfo)return;
+  useEffect(() => {
+    if (!playCanvasRef.current || !gifInfo) return;
     const canvas = playCanvasRef.current;
     canvas.width = gifInfo.width;
     canvas.height = gifInfo.height;
-  },[gifInfo]);
+  }, [gifInfo]);
 
   useEffect(() => {
     if (playCanvasRef.current && gifFrames.length) {
       drawFrame();
-      if (playStatus === "PAUSE") { return;}
+      if (playStatus === 'PAUSE') {
+        return;
+      }
       startLoop();
     }
   }, [gifInfo, gifFrames, nowFrame]);
@@ -242,7 +243,7 @@ function App() {
           max={gifInfo?.numFrames ? gifInfo?.numFrames - 1 : 0}
           value={jumpFrame}
           valueLabelDisplay="auto"
-          getAriaValueText={v=>v}
+          getAriaValueText={(v) => v}
           onChange={handleSliderChange}
           aria-labelledby="continuous-slider"
         />
@@ -267,16 +268,17 @@ function App() {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             {!gifInfo && (
-              <Button variant="contained" color="primary" disableElevation>
-                选择GIF文件
-                <TextField
-                  style={{ width: "100%", opacity: 0, position: "absolute" }}
-                  label="请选择GIF文件"
-                  placeholder="请选择gif文件"
-                  type="file"
-                  onChange={handleFile}
-                />
-              </Button>
+              // <Button variant="contained" onClick={(e)=>{e.stopPropagation();chooseFile?.click();}} color="primary" disableElevation>
+              //   选择GIF文件
+              <TextField
+                id="chooseFile"
+                // style={{ width: "100%", opacity: 0, position: "absolute" }}
+                // label="请选择GIF文件"
+                placeholder="请选择gif文件"
+                type="file"
+                onChange={handleFile}
+              />
+              // </Button>
             )}
           </Grid>
           <Grid item xs={3}>
@@ -321,7 +323,7 @@ function App() {
           </Grid>
           <Grid item xs={12}>
             <TextField
-              style={{ width: "100%" }}
+              style={{ width: '100%' }}
               onChange={handleInput('text')}
               label="添加的文字"
               type="text"
@@ -339,10 +341,10 @@ function App() {
           variant="contained"
           aria-label="contained  primary button group"
         >
-          <Button onClick={handleChangeStatus("PLAY")}>播放</Button>
-          <Button onClick={handleChangeStatus("PAUSE")}>暂停</Button>
-          <Button onClick={handleClick("ADDTEXT")}>确认编辑</Button>
-          <Button onClick={handleClick("RESET")}>清除编辑</Button>
+          <Button onClick={handleChangeStatus('PLAY')}>播放</Button>
+          <Button onClick={handleChangeStatus('PAUSE')}>暂停</Button>
+          <Button onClick={handleClick('ADDTEXT')}>确认编辑</Button>
+          <Button onClick={handleClick('RESET')}>清除编辑</Button>
         </ButtonGroup>
         <Paper className={styles.mt10} variant="outlined" square>
           {downloadUrl && <img src={downloadUrl} />}
@@ -354,8 +356,12 @@ function App() {
           variant="contained"
           aria-label="contained  primary button group"
         >
-          <Button onClick={handleClick("DOWNLOAD")}>生成GIF</Button>
-          {downloadUrl&&<Button download="demo.gif" href={downloadUrl}>下载生成的GIF</Button>}
+          <Button onClick={handleClick('DOWNLOAD')}>生成GIF</Button>
+          {downloadUrl && (
+            <Button download="demo.gif" href={downloadUrl}>
+              下载生成的GIF
+            </Button>
+          )}
         </ButtonGroup>
       </Container>
     </div>
