@@ -21,7 +21,7 @@
 
 ## demo 演示
 
-[表情包DEMO](https://blog.zackdk.top/minigif)
+[表情包DEMO](https://mini-gif.vercel.app/)
 
 ## 引入
 
